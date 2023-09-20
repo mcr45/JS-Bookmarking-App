@@ -13,15 +13,21 @@
             background-size: cover;
             height: 100vh;
         }
+        .content{
+              font-size: 19px;
+            line-height: 1.5;
+              margin: 0 auto;
+            position: relative; 
+            border-radius: 5px;
+        }
         .floater{
             background: white;
-            font-size: 19px;
-            line-height: 1.5;
-            border-radius: 5px;
+          
+           
             max-width: 500px;
-            margin: 0 auto;
-            position: relative;
+          
             transition: cubic-bezier(0.175, 0.885, 0.32, 1.275) all;
+            margin-bottom: 30px;
         }
         .floater input[type=text]{
             padding: 30px 20px;
@@ -59,6 +65,27 @@
         body.show-flo .overlay{
             opacity: 1;
         }
+        .bookmark{
+            display: block;
+            background: #fff;
+            color:grey;
+            padding:20px;
+            transition: 0.3s ease all;
+            border-bottom: 1px solid #ddd;
+            font-size: 15px;
+        }
+        .bookmark:hover{color: #1ce;
+        text-decoration: none;}
+        .bookmark:first-child{
+            border-top-left-radius:5px;
+            border-top-right-radius: 8px;
+        }
+        .bookmark:last-child{
+
+            border-bottom-left-radius:8px;
+            border-bottom-right-radius: 5px;
+            border-bottom: 0;
+        }
     </style>
     <title>Floating input</title>
 </head>
@@ -67,13 +94,17 @@
 
 
 
-    <div class="floater">
+    <div class="floater content">
         <div class="floater-top">
             <input type="text" name="" class="form-control" placeholder="what is on your mind?" id="">
         </div>
         <div class="floater-bottom">
             <button type="button" class="btn btn-primary btn-sm">Add</button>
         </div>
+    </div>
+    
+    <div class="bookmark-list content">
+        <a href="" class="bookmark">Hello</a>
     </div>
     <script>
 const body= document.body
