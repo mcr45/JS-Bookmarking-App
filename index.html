@@ -23,7 +23,7 @@
         .floater{
             background: white;
           
-           
+           z-index: 12;
             max-width: 500px;
           
             transition: cubic-bezier(0.175, 0.885, 0.32, 1.275) all;
@@ -53,7 +53,9 @@
             width: 100%;
             height: 100%;
             opacity: 0;
+            z-index: 10;
             transition: 0.3 ease opacity;
+            pointer-events: none;
         }
         body.show-flo .floater{
             transform: scale(1.1);
@@ -64,7 +66,9 @@
         }
         body.show-flo .overlay{
             opacity: 1;
+            pointer-events: all;
         }
+        .bookmark-list{z-index: 9;position: relative;}
         .bookmark{
             display: block;
             background: #fff;
@@ -95,16 +99,20 @@
 
 
     <div class="floater content">
-        <div class="floater-top">
-            <input type="text" name="" class="form-control" placeholder="what is on your mind?" id="">
-        </div>
-        <div class="floater-bottom">
-            <button type="button" class="btn btn-primary btn-sm">Add</button>
-        </div>
+
+        <form  class="bookmark-form">
+            <div class="floater-top">
+                <input type="text" name="" class="form-control" placeholder="what is on your mind?" id="">
+            </div>
+            <div class="floater-bottom">
+                <button type="submit" class="btn btn-primary btn-sm">Add</button>
+            </div>
+            
+        </form>
     </div>
     
     <div class="bookmark-list content">
-        <a href="" class="bookmark">Hello</a>
+       
     </div>
     <script>
 const body= document.body
@@ -121,6 +129,25 @@ function closeFlo(){
     body.classList.remove('show-flo')}
 }
 
-    </script>
+/*================================================== ==========================================
+ */ 
+
+ const bookmark_list=document.querySelector('.bookmark-list')
+ const form=document.querySelector('.bookmark-form')
+ const inputForm=form.querySelector('input[type=text]')
+form.addEventListener('submit',addBookm)
+function addBookm(e){
+    e.preventDefault()
+    const title=inputForm.value 
+    const bookmark=document.createElement('a')
+    bookmark.className='bookmark'
+    bookmark.innerText=title
+    bookmark.href="#"
+    bookmark.target='_blank'
+    bookmark_list.appendChild(bookmark)
+    form.reset()
+
+}
+  </script>
 </body>
 </html>
