@@ -135,17 +135,44 @@ function closeFlo(){
  const bookmark_list=document.querySelector('.bookmark-list')
  const form=document.querySelector('.bookmark-form')
  const inputForm=form.querySelector('input[type=text]')
-form.addEventListener('submit',addBookm)
+ const bookmarks=JSON.parse(localStorage.getItem('bookmarks'||[]))
+fillBookmarkList(bookmarks)
+ form.addEventListener('submit',addBookm)
 function addBookm(e){
     e.preventDefault()
     const title=inputForm.value 
+
+    /* 
+    
     const bookmark=document.createElement('a')
     bookmark.className='bookmark'
     bookmark.innerText=title
     bookmark.href="#"
     bookmark.target='_blank'
-    bookmark_list.appendChild(bookmark)
+    bookmark_list.appendChild(bookmark) */
+    const storedBookmark={title:title}
+    bookmarks.push(storedBookmark)
+    fillBookmarkList(bookmarks)
+    storeBookmarks(bookmarks)
     form.reset()
+
+}
+function fillBookmarkList(bookmarks=[]){
+let bookmarksHTML=bookmarks.map((bookmarks)=>{
+    return `<a href='#' class='bookmark'>
+        ${bookmarks.title}
+        ` 
+}).join('')
+/* for(let i=0;bookmarks.length;i++){
+    bookmarksHTML +=`<a href='#' class='bookmark'>
+        ${bookmarks[i].title}
+        `    
+} */
+bookmark_list.innerHTML=bookmarksHTML
+localStorage.setItem('bookmarks',JSON.stringify(bookmarks))
+}
+function storeBookmarks(){
+
 
 }
   </script>
