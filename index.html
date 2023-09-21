@@ -99,10 +99,11 @@
         .bookmark .img{
             background-color: #ddd;
             border-radius: 6px;
-            background-image: url('https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse4.mm.bing.net%2Fth%3Fid%3DOIP.bS8GtJ0jbgh3KjM9N63DSAHaEK%26pid%3DApi&f=1&ipt=3d42233788f96f0ff2443d6d4f43f4c206003eca0aa7fd1a0a2ebdc421898e6e&ipo=images');
-            background-size: cover;
-            width: 80px;
+           /*  background-image: url('https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse4.mm.bing.net%2Fth%3Fid%3DOIP.bS8GtJ0jbgh3KjM9N63DSAHaEK%26pid%3DApi&f=1&ipt=3d42233788f96f0ff2443d6d4f43f4c206003eca0aa7fd1a0a2ebdc421898e6e&ipo=images');
+            */ background-size: cover;
+            width: 110px;
             height: 60px;
+            background-position: top center;
             margin-right: 20px;
         }
         .bookmark .title{
@@ -166,6 +167,9 @@ function closeFlo(){
  const form=document.querySelector('.bookmark-form')
  const inputForm=form.querySelector('input[type=text]')
  const bookmarks=JSON.parse(localStorage.getItem('bookmarks'))|| []
+ const apiURL= 'https://opengraph.io/api/1.1/site'
+const appId='1714181c-aa1f-4438-8429-fd0796b99b46'
+const myUrl=encodeURIComponent('https://multiplayer.it/articoli/ea-sports-fc-24-le-prime-impressioni-in-attesa-della-recensione.html')
 
 fillBookmarkList(bookmarks)
 
@@ -174,7 +178,25 @@ form.addEventListener('submit',addBookm)
 
 function addBookm(e){
     e.preventDefault()
-    const title=inputForm.value 
+    if(!inputForm.value){alert('we need info') 
+return}
+    const url=inputForm.value
+    const yourUrl=encodeURIComponent('https://multiplayer.it/articoli/ea-sports-fc-24-le-prime-impressioni-in-attesa-della-recensione.html')
+    fetch(apiURL +'/'+yourUrl +'?app_id='+appId )
+    .then(res=>res.json())
+    .then(data=>{
+         //const title=inputForm.value 
+         const storedBookmark={title:data.hybridGraph.title,
+        image:data.hybridGraph.image,
+            link:data.hybridGraph.url
+    }
+    bookmarks.push(storedBookmark)
+    fillBookmarkList(bookmarks)
+    storeBookmarks(bookmarks)
+    form.reset()
+    }).catch((error)=>{console.log(error)})
+
+   
 
     /* 
     
@@ -184,15 +206,11 @@ function addBookm(e){
     bookmark.href="#"
     bookmark.target='_blank'
     bookmark_list.appendChild(bookmark) */
-    const storedBookmark={title:title}
-    bookmarks.push(storedBookmark)
-    fillBookmarkList(bookmarks)
-    storeBookmarks(bookmarks)
-    form.reset()
+    
 
 }
 function removeBookmarks(e){
-if(!e.target.matches('.mso'))return
+if(!e.target.matches('.mso')) return
 const index=e.target.parentNode.dataset.id
 bookmarks.splice(index,1)
 fillBookmarkList(bookmarks)
@@ -202,8 +220,8 @@ storeBookmarks(bookmarks)
 function fillBookmarkList(bookmarks=[]){
 let bookmarksHTML=bookmarks.map((bookmarks,i)=>{
     return `
-    <a href='#' class='bookmark' data-id="${i}">
-        <div class="img"></div>
+    <a href='${bookmarks.link}' class='bookmark' data-id="${i}">
+        <div class="img" style="background-image:url('${bookmarks.image}')"></div>
         <div class="title">${bookmarks.title}</div>
         <span class="material-symbols-outlined mso">
 close
@@ -220,7 +238,7 @@ close
 bookmark_list.innerHTML=bookmarksHTML
 localStorage.setItem('bookmarks',JSON.stringify(bookmarks))
 }
-function storeBookmarks(bookmark=[]){
+function storeBookmarks(bookmarks=[]){
 localStorage.setItem('bookmarks',JSON.stringify(bookmarks))
 
 }
